@@ -1,21 +1,47 @@
 import React, { Component } from 'react';
+import TextField from 'material-ui/TextField';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import SummonerCard from './SummonerCard';
+import Paper from 'material-ui/Paper';
 
+const imgUrl = 'http://vignette3.wikia.nocookie.net/leagueoflegends/images/d/d3/Summoners_rift_platform.png/revision/latest?cb=20160216121609';
 
 const style = {
-  app: {
-    marginTop: 90,
-    fontSize: 50,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: "#607D8B",
-  },
-  sumBtn: {
-    fontSize: 20,
- },
+	background:{
+			backgroundImage: 'url(' + imgUrl + ')',
+		 	backgroundSize: '100% 100%',
+		 	backgroundRepeat: 'no-repeat',
+		    width: '100vw',
+		    minHeight: '100vh',
+		    backgroundColor: 'rgba(59,59,59,.6)',
+	},
+	container: {
+		//width: '100vw',
+		//minHeight: '100vh',
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+	},
+	pageTitle: {
+		marginTop: '15%',
+		marginBottom: '7.5%',
+		fontSize: '4em',
+		color: '#FFAB40',
+		textAlign: 'center',
+	},
+	appBar: {
+		backgroundColor: 'rgba(59,59,59,.9)',
+	},
+	form: {
+		padding: '2%',
+	},
+	btnBox: {
+		alignText: 'center',
+	},
+	btn: {
+		fontSize: 10,
+	},
 }
 
 export default class GetStarted extends Component {
@@ -23,57 +49,58 @@ export default class GetStarted extends Component {
 	constructor() {
 		super();
 		this.state = {
-			summonerInputchg: "",
-			summonerName: ""
+			summonerName: "",
+			userInputChg: "",
 		}
-		this.goToSummoner = this.goToSummoner.bind(this);
 		this.handleInputChg = this.handleInputChg.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
-	goToSummoner(event) {
-		event.preventDefault();
-		const summonerName = this.summonerName.value;
-		this.context.router.transitionTo(`/summoner/${summonerName}`);
-	}
-
 	handleInputChg(event) {
-		this.setState( {summonerInputchg: event.target.value} );
+		this.setState( {userInputChg: event.target.value} )
 	}
 
 	handleSubmit(event) {
 		event.preventDefault();
-		const summonerName = this.state.summonerInputchg;
-		this.setState( {summonerName: summonerName})
+		const summonerName = this.state.userInputChg.toLowerCase();
+		this.setState( {summonerName: summonerName} );
+		this.context.router.transitionTo(`/summoner/${summonerName}`);
 	}
 
 	render() {
 		return(
-			<div>
-				<AppBar
-    				title="Kalista Math"
-    				iconClassNameRight="muidocs-icon-navigation-expand-more"
-    			/>
-				<div style={style.app}>
-          			<div>Enter Your Summoner Name</div>
-          			<form action="" onSubmit={this.handleSubmit}>
-          				<TextField
-				      		hintText="ex.  Doublelift"
-				      		value={this.state.summonerInputchg}
-				      		onChange={this.handleInputChg}
-				    	/>
-				    	<br />
-				    	<RaisedButton label="Submit" primary={true} style={style.sumBtn} onClick={this.handleSubmit} />
-          			</form>          			
-				    <br />
-				    <br />
-				    {this.state.summonerName ? <SummonerCard /> : ''}
-        		</div>				
+			<div style={style.background}>
+				<AppBar style={style.appBar}/>
+				<div style={style.container}>
+					<div>
+						<h2 style={style.pageTitle}>Enter Your Summoner Name</h2>
+					</div>
+					<Paper>
+						<form 
+							style={style.form}
+							onSubmit={this.handleSubmit}>
+							<TextField
+      							hintText="ex. Doublelift"
+      							underlineStyle={{width: '95%'}}
+      							onChange={this.handleInputChg}
+      							value={this.state.userInputChg}
+      						/>
+    						<div style={style.btnBox}>
+								<RaisedButton 
+									label="Submit" 
+									primary={true} 
+									style={style.btn}
+									fullWidth={true}
+								/>
+							</div>
+						</form>
+    				</Paper>
+				</div>	
 			</div>
 		)
 	}
 }
 
 GetStarted.contextTypes = {
-	router: React.PropTypes.object
+  router: React.PropTypes.object
 }
