@@ -3,7 +3,7 @@ const request = require('request');
 
 const app = express();
 
-const API_KEY = 'RGAPI-544897fd-c31c-442a-9724-912ae189dfcf';
+const API_KEY = 'XXX';
 let summonerName = {};
 
 app.set('port', (process.env.PORT || 4000));
